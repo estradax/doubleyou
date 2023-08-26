@@ -61,6 +61,7 @@ export default function RegisterPage() {
         <img className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo" />
         Flowbite
       </a>
+      {/* TODO: make sure the card is shrink down when the container width is less than 400 */}
       <Card className="w-[400px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
