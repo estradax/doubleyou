@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "@/components/ui/data-table";
-import SessionFormDialog from "./session-form-dialog";
 
 type Payment = {
   id: string
@@ -35,17 +34,15 @@ async function getData(): Promise<Payment[]> {
   ]
 }
 
-export default async function SessionsPage() {
+export default async function SessionDetailPage() {
   const data = await getData();
 
   return (
     <div className="flex justify-center">
       <div className="max-w-screen-xl w-full p-4">
-	<div className="flex justify-end mb-4">
-	  <SessionFormDialog />	 
-	</div>
 	<DataTable columns={columns} data={data} />
       </div>
     </div>
   );
+
 }
