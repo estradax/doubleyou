@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { getServerSession } from "next-auth";
-import { redirect } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,13 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-export default async function QRCodePage() {
-  const session = await getServerSession();
-
-  if (!session?.user) {
-    return redirect('/login');
-  }
-
+export default function QRCodePage() {
   return (
     <div className="flex justify-center p-4">
       <Card className="max-w-[500px] w-full">
