@@ -1,0 +1,7 @@
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: foobar
+    ports:
+      - 6000:5432
