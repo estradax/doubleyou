@@ -10,6 +10,7 @@ const authOptions: NextAuthOptions = {
 	password: { type: 'password' }
       },
       async authorize(credentials, req) {
+	// TODO: implement this
 	return {
 	  id: '1',
 	  name: credentials?.email,
