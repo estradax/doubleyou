@@ -4,6 +4,8 @@ import * as z from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import { signIn } from 'next-auth/react';
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -21,6 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -30,6 +33,8 @@ const loginSchema = z.object({
 type LoginSchema = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -38,8 +43,24 @@ export default function LoginPage() {
     }
   });
 
-  function onSubmit(data: LoginSchema) {
-    console.log(data);
+  async function onSubmit(data: LoginSchema) {
+    const result = await signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+      // TODO: make this dynamic
+      callbackUrl: '/'
+    });
+
+    if (!result?.ok || result?.error) {
+      return toast({
+	title: 'Something went wrong',
+	description: 'Your sign in request failed. Please try again.',
+	variant: 'destructive'
+      });
+    }
+
+    return router.push(result?.url!); 
   }
 
   // TODO: make sure the card is shrink down when the container width is less than 400
