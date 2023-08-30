@@ -1,9 +1,9 @@
 'use client';
 
-import * as z from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -22,26 +22,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
 import { Checkbox } from '@/components/ui/checkbox';
-
-const registerSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-  confirmPassword: z.string(),
-  acceptTermsAndConditions: z.boolean()
-    .refine((data) => data !== false, {
-      message: 'Please check'
-    })
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Password do not match',
-  path: ['confirmPassword']
-});
-
-type RegisterSchema = z.infer<typeof registerSchema>;
+import { RegisterSchema, registerSchema } from "@/lib/auth";
+import { toast } from '@/components/ui/use-toast';
 
 export default function RegisterPage() {
+  const router = useRouter();
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -49,8 +38,26 @@ export default function RegisterPage() {
     }
   });
 
-  function onSubmit(data: RegisterSchema) {
-    console.log(data);
+  async function onSubmit(data: RegisterSchema) {
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
+	'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+	...data
+      })
+    });
+
+    const resData = await res.json() as any;
+
+    if (!resData.success) {
+      return toast({
+	description: resData.r,
+      });
+    }
+
+    return router.push('/');
   }
 
   // TODO: make sure the card is shrink down when the container width is less than 400
@@ -63,6 +70,19 @@ export default function RegisterPage() {
           </CardHeader>
           <CardContent>
             <div className="grid w-full items-center gap-4">
+	      <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"
