@@ -1,13 +1,4 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession();
-  
-  if (session?.user) {
-    return redirect('/');
-  }
-
   return (
     <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
       <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-primary">
