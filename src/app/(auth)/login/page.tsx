@@ -1,6 +1,5 @@
 'use client';
 
-import * as z from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -23,13 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast";
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
-
-type LoginSchema = z.infer<typeof loginSchema>;
+import { LoginSchema, loginSchema } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,11 +36,25 @@ export default function LoginPage() {
   });
 
   async function onSubmit(data: LoginSchema) {
-    return toast({
-      title: 'Something went wrong',
-      description: 'Your sign in request failed. Please try again.',
-      variant: 'destructive'
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+	'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+	...data
+      })
     });
+
+    const resData = await res.json() as any;
+  
+    if (!resData.success) {
+      return toast({
+	description: resData.r,
+      });
+    }
+
+    return router.push('/');
   }
 
   // TODO: make sure the card is shrink down when the container width is less than 400

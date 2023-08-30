@@ -13,9 +13,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from 'next/navigation';
 
 export function Nav() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  async function signOut() {
+    await fetch('/api/logout', {
+      method: 'POST',
+    });
+    router.push('/login');
+  }
 
   return (
     <nav className="bg-secondary border-border">
@@ -39,6 +48,7 @@ export function Nav() {
 	      <DropdownMenuItem>Billing</DropdownMenuItem>
 	      <DropdownMenuItem>Team</DropdownMenuItem>
 	      <DropdownMenuItem>Subscription</DropdownMenuItem>
+	      <DropdownMenuItem onClick={signOut}>Sign out</DropdownMenuItem>
 	    </DropdownMenuContent>
 	  </DropdownMenu>
 	  <Button variant="outline" size="icon" className="ml-4 md:hidden" onClick={() => setOpen((prev) => !prev)}>
