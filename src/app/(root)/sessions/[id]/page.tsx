@@ -1,9 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { notFound } from "next/navigation";
 import { DataTable } from "@/components/ui/data-table";
-import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth-session";
+import SessionDetailHeader from "./header";
 
 type Payment = {
   id: string
@@ -66,10 +66,7 @@ export default async function SessionDetailPage({ params }: { params: { id: stri
   return (
     <div className="flex justify-center">
       <div className="max-w-screen-xl w-full p-4">
-	<div className="flex justify-between items-center mb-4">
-	  <h1 className="font-semibold text-2xl">{session.name}</h1>
-	  <Button>Generate QR Code</Button>
-	</div>
+	<SessionDetailHeader session={session} />
 	<DataTable columns={columns} data={data} />
       </div>
     </div>

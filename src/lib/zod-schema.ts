@@ -28,3 +28,9 @@ export const sessionSchema = z.object({
 })
 
 export type SessionSchema = z.infer<typeof sessionSchema>;
+
+export const attendanceLinkSchema = z.object({
+  sessionId: z.string()
+});
+
+export type AttendanceLinkSchema = z.infer<typeof attendanceLinkSchema>;
