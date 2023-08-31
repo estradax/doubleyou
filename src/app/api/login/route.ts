@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { loginSchema } from '@/lib/auth';
+import { loginSchema } from '@/lib/zod-schema';
 import { prisma } from '@/lib/prisma';
 
 export async function POST(req: NextRequest) {

@@ -11,11 +11,12 @@ generator client {
 }
 
 model User {
-  id          String        @id @default(cuid())
-  name        String
-  email       String        @unique
-  password    String
-  authSession AuthSession[]
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  password     String
+  authSessions AuthSession[]
+  sessions     Session[]
 
   @@map("users")
 }
@@ -26,4 +27,13 @@ model AuthSession {
   userId String @map("user_id")
 
   @@map("auth_sessions")
+}
+
+model Session {
+  id     String @id @default(cuid())
+  name   String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  @@map("sessions")
 }

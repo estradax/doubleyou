@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
 import { Checkbox } from '@/components/ui/checkbox';
-import { RegisterSchema, registerSchema } from "@/lib/auth";
+import { RegisterSchema, registerSchema } from "@/lib/zod-schema";
 import { toast } from '@/components/ui/use-toast';
 
 export default function RegisterPage() {

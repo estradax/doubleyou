@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast";
-import { LoginSchema, loginSchema } from "@/lib/auth";
+import { LoginSchema, loginSchema } from "@/lib/zod-schema";
 
 export default function LoginPage() {
   const router = useRouter();

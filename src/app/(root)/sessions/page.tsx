@@ -1,42 +1,31 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "@/components/ui/data-table";
 import FormDialog from "./form-dialog";
+import { Session } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth-session";
 
-type Payment = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
-}
-
-const columns: ColumnDef<Payment>[] = [
+const columns: ColumnDef<Session>[] = [
   {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "amount",
-    header: "Amount",
+    accessorKey: "name",
+    header: "Name",
   },
 ]
 
-async function getData(): Promise<Payment[]> {
-  return [
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-  ]
+async function getSessions(): Promise<Session[]> {
+  const user = await getCurrentUser();
+
+  const sessions = await prisma.session.findMany({
+    where: {
+      userId: user?.id
+    }
+  });
+
+  return sessions;
 }
 
 export default async function SessionsPage() {
-  const data = await getData();
+  const data = await getSessions();
 
   return (
     <div className="flex justify-center">

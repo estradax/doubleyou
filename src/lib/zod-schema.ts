@@ -22,3 +22,9 @@ export const registerSchema = z.object({
 });
 
 export type RegisterSchema = z.infer<typeof registerSchema>;
+ 
+export const sessionSchema = z.object({
+  name: z.string().min(2).max(50),
+})
+
+export type SessionSchema = z.infer<typeof sessionSchema>;

@@ -20,14 +20,11 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
- 
-const sessionSchema = z.object({
-  name: z.string().min(2).max(50),
-})
-
-type SessionSchema = z.infer<typeof sessionSchema>;
+import { sessionSchema, SessionSchema } from '@/lib/zod-schema';
+import { useToast } from "@/components/ui/use-toast";
 
 export default function SessionFormDialog() {
+  const { toast } = useToast();
   const form = useForm<SessionSchema>({
     resolver: zodResolver(sessionSchema),
     defaultValues: {
@@ -35,8 +32,28 @@ export default function SessionFormDialog() {
     },
   });
 
-  function onSubmit(data: SessionSchema) {
-    console.log(data);
+  async function onSubmit(data: SessionSchema) {
+    const res = await fetch('/api/sessions', {
+      method: 'POST',
+      headers: {
+	'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+	...data
+      })
+    });
+
+    const resData = await res.json() as any;
+
+    if (!resData.success) {
+      return toast({
+	description: resData.r
+      });
+    }
+
+    return toast({
+      description: 'success create new session'
+    });
   }
 
   return (
