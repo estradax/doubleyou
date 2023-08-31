@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { attendanceLinkSchema } from '@/lib/zod-schema';
 import { getCurrentUser } from '@/lib/auth-session';
 import { prisma } from '@/lib/prisma';
+import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
@@ -27,6 +28,8 @@ export async function POST(req: NextRequest) {
       ...result.data,
     }
   });
+
+  cookies().set('alid', attendanceLink.id);
 
   return NextResponse.json({
     success: true,
