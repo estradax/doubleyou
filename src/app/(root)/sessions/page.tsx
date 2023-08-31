@@ -1,16 +1,8 @@
-import { ColumnDef } from "@tanstack/react-table"
-import { DataTable } from "@/components/ui/data-table";
 import FormDialog from "./form-dialog";
 import { Session } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth-session";
-
-const columns: ColumnDef<Session>[] = [
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-]
+import Table from "./table";
 
 async function getSessions(): Promise<Session[]> {
   const user = await getCurrentUser();
@@ -33,7 +25,7 @@ export default async function SessionsPage() {
 	<div className="flex justify-end mb-4">
 	  <FormDialog />	 
 	</div>
-	<DataTable columns={columns} data={data} />
+	<Table data={data} />
       </div>
     </div>
   );

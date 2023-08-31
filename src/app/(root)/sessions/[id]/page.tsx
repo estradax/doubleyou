@@ -1,5 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table"
+import { notFound } from "next/navigation";
 import { DataTable } from "@/components/ui/data-table";
+import { Button } from "@/components/ui/button";
+import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth-session";
 
 type Payment = {
   id: string
@@ -34,12 +38,38 @@ async function getData(): Promise<Payment[]> {
   ]
 }
 
-export default async function SessionDetailPage() {
+async function getSessionDetail(id: string) {
+  const user = await getCurrentUser();
+  if (!user) {
+    return null;
+  }
+
+  const session = await prisma.session.findFirst({
+    where: {
+      AND: [
+	{ id },
+	{ userId: user.id }
+      ]
+    }
+  });
+
+  return session;
+}
+
+export default async function SessionDetailPage({ params }: { params: { id: string }}) {
   const data = await getData();
+  const session = await getSessionDetail(params.id);
+  if (!session) {
+    return notFound();
+  }
 
   return (
     <div className="flex justify-center">
       <div className="max-w-screen-xl w-full p-4">
+	<div className="flex justify-between items-center mb-4">
+	  <h1 className="font-semibold text-2xl">{session.name}</h1>
+	  <Button>Generate QR Code</Button>
+	</div>
 	<DataTable columns={columns} data={data} />
       </div>
     </div>
