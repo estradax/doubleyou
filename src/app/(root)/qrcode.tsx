@@ -7,7 +7,7 @@ export default function QRCode({ attendanceLink }: { attendanceLink: AttendanceL
   const { Image } = useQRCode();
 
   return (
-    <Image text={`http://localhost:3000/attend/${attendanceLink.id}`} options={{
+    <Image text={`http://192.168.1.28:3000/attend/${attendanceLink.id}`} options={{
       type: 'image/jpeg',
       quality: 0.3,
       errorCorrectionLevel: 'M',
