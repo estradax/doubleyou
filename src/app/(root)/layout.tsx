@@ -1,9 +1,13 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { Nav } from "./nav";
-import { prisma } from "@/lib/prisma";
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { Nav } from './nav';
+import { prisma } from '@/lib/prisma';
 
-export default async function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const sid = cookies().get('sid');
 
   if (!sid) {
@@ -12,9 +16,9 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
   const authSession = await prisma.authSession.findUnique({
     where: {
-      id: sid.value
-    }
-  })
+      id: sid.value,
+    },
+  });
 
   if (!authSession) {
     return redirect('/login');

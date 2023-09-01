@@ -10,20 +10,20 @@ export async function POST(req: NextRequest) {
   if (!result.success) {
     return NextResponse.json({
       success: false,
-      r: 'bad request'
+      r: 'bad request',
     });
   }
 
   const userExists = await prisma.user.findUnique({
     where: {
-      email: result.data.email
-    }
+      email: result.data.email,
+    },
   });
 
   if (userExists) {
     return NextResponse.json({
       success: false,
-      r: 'email is taken'
+      r: 'email is taken',
     });
   }
 
@@ -32,19 +32,19 @@ export async function POST(req: NextRequest) {
       name: result.data.name,
       email: result.data.email,
       password: result.data.password,
-    }
+    },
   });
 
   const authSession = await prisma.authSession.create({
     data: {
       userId: user.id,
-    }
+    },
   });
 
   cookies().set('sid', authSession.id);
 
   return NextResponse.json({
     success: true,
-    r: 'success'
+    r: 'success',
   });
 }

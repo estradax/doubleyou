@@ -1,17 +1,17 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -19,10 +19,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { RegisterSchema, registerSchema } from "@/lib/zod-schema";
+import { RegisterSchema, registerSchema } from '@/lib/zod-schema';
 import { toast } from '@/components/ui/use-toast';
 
 export default function RegisterPage() {
@@ -34,26 +34,26 @@ export default function RegisterPage() {
       email: '',
       password: '',
       confirmPassword: '',
-      acceptTermsAndConditions: false
-    }
+      acceptTermsAndConditions: false,
+    },
   });
 
   async function onSubmit(data: RegisterSchema) {
     const res = await fetch('/api/register', {
       method: 'POST',
       headers: {
-	'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-	...data
-      })
+        ...data,
+      }),
     });
 
-    const resData = await res.json() as any;
+    const resData = (await res.json()) as any;
 
     if (!resData.success) {
       return toast({
-	description: resData.r,
+        description: resData.r,
       });
     }
 
@@ -70,7 +70,7 @@ export default function RegisterPage() {
           </CardHeader>
           <CardContent>
             <div className="grid w-full items-center gap-4">
-	      <FormField
+              <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
@@ -103,7 +103,11 @@ export default function RegisterPage() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="********"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -116,7 +120,11 @@ export default function RegisterPage() {
                   <FormItem>
                     <FormLabel>Confim password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="********"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -134,7 +142,13 @@ export default function RegisterPage() {
                       />
                     </FormControl>
                     <FormLabel className="text-sm font-normal text-muted-foreground">
-                      I accept the <a className="font-medium text-primary hover:underline" href="#">Terms and Conditions</a>
+                      I accept the{' '}
+                      <a
+                        className="font-medium text-primary hover:underline"
+                        href="#"
+                      >
+                        Terms and Conditions
+                      </a>
                     </FormLabel>
                     <FormMessage />
                   </FormItem>
@@ -143,9 +157,17 @@ export default function RegisterPage() {
             </div>
           </CardContent>
           <CardFooter className="block space-y-4">
-            <Button className="w-full" type="submit">Create an account</Button>
+            <Button className="w-full" type="submit">
+              Create an account
+            </Button>
             <p className="text-sm text-muted-foreground">
-              Already have an account? <Link href="/login" className="font-medium text-primary hover:underline">Login here</Link>
+              Already have an account?{' '}
+              <Link
+                href="/login"
+                className="font-medium text-primary hover:underline"
+              >
+                Login here
+              </Link>
             </p>
           </CardFooter>
         </form>

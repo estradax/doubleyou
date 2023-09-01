@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   if (!result.success) {
     return NextResponse.json({
       success: false,
-      r: 'bad request'
+      r: 'bad request',
     });
   }
 
@@ -19,20 +19,20 @@ export async function POST(req: NextRequest) {
   if (!user) {
     return NextResponse.json({
       success: false,
-      r: 'unauthenticated'
+      r: 'unauthenticated',
     });
   }
 
   const attendanceLink = await prisma.attendanceLink.create({
     data: {
       ...result.data,
-    }
+    },
   });
 
   cookies().set('alid', attendanceLink.id);
 
   return NextResponse.json({
     success: true,
-    r: attendanceLink.id
+    r: attendanceLink.id,
   });
 }

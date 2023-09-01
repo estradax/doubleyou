@@ -3,15 +3,15 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button"
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -19,10 +19,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input"
-import { useToast } from "@/components/ui/use-toast";
-import { LoginSchema, loginSchema } from "@/lib/zod-schema";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
+import { LoginSchema, loginSchema } from '@/lib/zod-schema';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -32,25 +32,25 @@ export default function LoginPage() {
     defaultValues: {
       email: '',
       password: '',
-    }
+    },
   });
 
   async function onSubmit(data: LoginSchema) {
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: {
-	'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-	...data
-      })
+        ...data,
+      }),
     });
 
-    const resData = await res.json() as any;
-  
+    const resData = (await res.json()) as any;
+
     if (!resData.success) {
       return toast({
-	description: resData.r,
+        description: resData.r,
       });
     }
 
@@ -87,7 +87,11 @@ export default function LoginPage() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="********"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,11 +101,24 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="block space-y-4">
             <div className="flex justify-end">
-              <a href="#" className="text-sm font-medium text-primary hover:underline">Forgot password?</a>
+              <a
+                href="#"
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                Forgot password?
+              </a>
             </div>
-            <Button className="w-full" type="submit">Sign in</Button>
+            <Button className="w-full" type="submit">
+              Sign in
+            </Button>
             <p className="text-sm text-muted-foreground">
-              Dont't have an account yet? <Link href="/register" className="font-medium text-primary hover:underline">Sign up</Link>
+              Dont't have an account yet?{' '}
+              <Link
+                href="/register"
+                className="font-medium text-primary hover:underline"
+              >
+                Sign up
+              </Link>
             </p>
           </CardFooter>
         </form>

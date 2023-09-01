@@ -10,40 +10,40 @@ export async function POST(req: NextRequest) {
   if (!result.success) {
     return NextResponse.json({
       success: false,
-      r: 'bad request'
+      r: 'bad request',
     });
   }
 
   const user = await prisma.user.findUnique({
     where: {
-      email: result.data.email
-    }
+      email: result.data.email,
+    },
   });
 
   if (!user) {
     return NextResponse.json({
       success: false,
-      r: 'invalid credentials'
+      r: 'invalid credentials',
     });
   }
 
   if (user.password !== result.data.password) {
     return NextResponse.json({
       success: false,
-      r: 'invalid credentials'
+      r: 'invalid credentials',
     });
   }
 
   const authSession = await prisma.authSession.create({
     data: {
       userId: user.id,
-    }
+    },
   });
 
   cookies().set('sid', authSession.id);
 
   return NextResponse.json({
     success: true,
-    r: 'success'
+    r: 'success',
   });
 }

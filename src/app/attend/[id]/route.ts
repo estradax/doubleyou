@@ -1,9 +1,12 @@
-import { getCurrentUser } from "@/lib/auth-session";
-import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
-import { NextRequest } from "next/server";
+import { getCurrentUser } from '@/lib/auth-session';
+import { prisma } from '@/lib/prisma';
+import { redirect } from 'next/navigation';
+import { NextRequest } from 'next/server';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string }}) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } },
+) {
   const user = await getCurrentUser();
   if (!user) {
     return redirect('/login');
@@ -11,8 +14,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
   const attendanceLink = await prisma.attendanceLink.findUnique({
     where: {
-      id: params.id
-    }
+      id: params.id,
+    },
   });
 
   if (!attendanceLink) {
@@ -22,11 +25,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
   const sessionAttendeeExists = await prisma.sessionAttendee.findFirst({
     where: {
-      AND: [
-	{sessionId: attendanceLink.sessionId},
-	{userId: user.id}
-      ],
-    }
+      AND: [{ sessionId: attendanceLink.sessionId }, { userId: user.id }],
+    },
   });
 
   if (sessionAttendeeExists) {
@@ -37,8 +37,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   const sessionAttendee = await prisma.sessionAttendee.create({
     data: {
       sessionId: attendanceLink.sessionId,
-      userId: user.id
-    }
+      userId: user.id,
+    },
   });
 
   // TODO: report succesufl message flash

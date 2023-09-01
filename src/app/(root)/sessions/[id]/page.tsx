@@ -1,41 +1,41 @@
-import { ColumnDef } from "@tanstack/react-table"
-import { notFound } from "next/navigation";
-import { DataTable } from "@/components/ui/data-table";
-import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/auth-session";
-import SessionDetailHeader from "./header";
+import { ColumnDef } from '@tanstack/react-table';
+import { notFound } from 'next/navigation';
+import { DataTable } from '@/components/ui/data-table';
+import { prisma } from '@/lib/prisma';
+import { getCurrentUser } from '@/lib/auth-session';
+import SessionDetailHeader from './header';
 
 type Payment = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
-}
+  id: string;
+  amount: number;
+  status: 'pending' | 'processing' | 'success' | 'failed';
+  email: string;
+};
 
 const columns: ColumnDef<Payment>[] = [
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: 'status',
+    header: 'Status',
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: 'email',
+    header: 'Email',
   },
   {
-    accessorKey: "amount",
-    header: "Amount",
+    accessorKey: 'amount',
+    header: 'Amount',
   },
-]
+];
 
 async function getData(): Promise<Payment[]> {
   return [
     {
-      id: "728ed52f",
+      id: '728ed52f',
       amount: 100,
-      status: "pending",
-      email: "m@example.com",
+      status: 'pending',
+      email: 'm@example.com',
     },
-  ]
+  ];
 }
 
 async function getSessionDetail(id: string) {
@@ -46,17 +46,18 @@ async function getSessionDetail(id: string) {
 
   const session = await prisma.session.findFirst({
     where: {
-      AND: [
-	{ id },
-	{ userId: user.id }
-      ]
-    }
+      AND: [{ id }, { userId: user.id }],
+    },
   });
 
   return session;
 }
 
-export default async function SessionDetailPage({ params }: { params: { id: string }}) {
+export default async function SessionDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const data = await getData();
   const session = await getSessionDetail(params.id);
   if (!session) {
@@ -66,10 +67,9 @@ export default async function SessionDetailPage({ params }: { params: { id: stri
   return (
     <div className="flex justify-center">
       <div className="max-w-screen-xl w-full p-4">
-	<SessionDetailHeader session={session} />
-	<DataTable columns={columns} data={data} />
+        <SessionDetailHeader session={session} />
+        <DataTable columns={columns} data={data} />
       </div>
     </div>
   );
-
 }

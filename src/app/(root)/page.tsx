@@ -1,16 +1,16 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { getCurrentUser } from "@/lib/auth-session";
-import { prisma } from "@/lib/prisma";
-import { cookies } from "next/headers";
-import QRCode from "./qrcode";
+} from '@/components/ui/card';
+import { getCurrentUser } from '@/lib/auth-session';
+import { prisma } from '@/lib/prisma';
+import { cookies } from 'next/headers';
+import QRCode from './qrcode';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,11 +22,11 @@ async function getAttendanceLinkDetail(id: string) {
 
   const attendanceLink = await prisma.attendanceLink.findUnique({
     include: {
-      session: true
+      session: true,
     },
     where: {
-      id
-    }
+      id,
+    },
   });
 
   if (!attendanceLink) {
@@ -47,15 +47,19 @@ export default async function QRCodePage() {
   return (
     <div className="flex justify-center p-4">
       <Card className="max-w-[500px] w-full">
-	<CardHeader>
-	  <CardTitle>QR Code</CardTitle>
-	</CardHeader>
-	<CardContent>
-	  {attendanceLink ? (<QRCode attendanceLink={attendanceLink} />) : (<span>no session</span>)}
-	</CardContent>
-	<CardFooter className="flex justify-end">
-	  <Button>End session</Button>
-	</CardFooter>
+        <CardHeader>
+          <CardTitle>QR Code</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {attendanceLink ? (
+            <QRCode attendanceLink={attendanceLink} />
+          ) : (
+            <span>no session</span>
+          )}
+        </CardContent>
+        <CardFooter className="flex justify-end">
+          <Button>End session</Button>
+        </CardFooter>
       </Card>
     </div>
   );

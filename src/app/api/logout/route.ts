@@ -7,12 +7,12 @@ export async function POST() {
 
   await prisma.authSession.delete({
     where: {
-      id: sid?.value
-    }
+      id: sid?.value,
+    },
   });
 
   return NextResponse.json({
     success: true,
-    r: 'success'
+    r: 'success',
   });
 }

@@ -12,8 +12,8 @@ export async function getCurrentUser() {
       user: true,
     },
     where: {
-      id: sid.value
-    }
+      id: sid.value,
+    },
   });
 
   return authSession?.user;

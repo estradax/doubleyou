@@ -1,8 +1,8 @@
-import "./globals.css";
+import './globals.css';
 
 import { Metadata } from 'next';
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   themeColor: [
@@ -16,11 +16,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <head />
       <body>
-	<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-	  {children}
-	  <Toaster />
-	</ThemeProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

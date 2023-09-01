@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   if (!result.success) {
     return NextResponse.json({
       success: false,
-      r: 'bad request'
+      r: 'bad request',
     });
   }
 
@@ -18,19 +18,19 @@ export async function POST(req: NextRequest) {
   if (!user) {
     return NextResponse.json({
       success: false,
-      r: 'unauthenticated'
+      r: 'unauthenticated',
     });
   }
 
   await prisma.session.create({
     data: {
       ...result.data,
-      userId: user.id
-    }
+      userId: user.id,
+    },
   });
 
   return NextResponse.json({
     success: true,
-    r: 'success'
+    r: 'success',
   });
 }
